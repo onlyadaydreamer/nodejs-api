@@ -1,12 +1,26 @@
 // const jsonwebtoken = require('jsonwebtoken');
 const jwt = require('koa-jwt');
 const Router = require('koa-router');
-const router = new Router({prefix: '/users'});
-const { find, findById, create, update, delete: del, login, checkOwner, lsitFollowing, follow, unfollow, listFollowers, checkUserExist } = require('../controllers/users');
+const router = new Router({ prefix: '/users' });
+const {
+  find,
+  findById,
+  create,
+  update,
+  delete: del,
+  login,
+  checkOwner,
+  listFollowing,
+  follow,
+  unfollow,
+  listFollowers,
+  checkUserExist,
+} = require('../controllers/users');
 const { secret } = require('../config');
 
-const auth = jwt({secret});
+const auth = jwt({ secret });
 
+// 自定义实现 auth 中间件
 // const auth = async (ctx, next) => {
 //     // header把所有的头都变成小写了; 如果请求头中没有authorization得到的就是undefined，会报错,所以要提供一个默认值
 //     const {authorization = ''} = ctx.request.header;
@@ -28,7 +42,7 @@ router.get('/:id', findById);
 router.patch('/:id', auth, checkOwner, update);
 router.delete('/:id', auth, checkOwner, del);
 router.post('/login', login);
-router.get('/:id/following', lsitFollowing);
+router.get('/:id/following', listFollowing);
 router.get('/:id/followers/', listFollowers);
 // :id 关注的人的id
 router.put('/following/:id', auth, checkUserExist, follow);
