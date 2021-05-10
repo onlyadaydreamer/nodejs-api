@@ -43,6 +43,7 @@ class TopicsCtl {
       avatar_url: { type: 'string', required: false },
       introduction: { type: 'string', required: false },
     });
+    // findByIdAndUpdate 返回的就是找到的那个，并不是更新以后的
     const topic = await Topic.findByIdAndUpdate(
       ctx.params.id,
       ctx.request.body
