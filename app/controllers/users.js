@@ -17,7 +17,7 @@ class UserCtl {
           .map((f) => ' +' + f)
           .join('')
       : '';
-    // mongoose select('+educitons+business') 过滤字段
+    // mongoose select('+educitons+business') 过滤字段, 但是如果字段值为空也不会显示
     const user = await User.findById(ctx.params.id).select(selectedFields);
     if (!user) {
       ctx.throw(404, '用户不存在');
@@ -32,8 +32,8 @@ class UserCtl {
     const { name } = ctx.request.body;
     const repeatedUser = await User.findOne({ name });
     if (repeatedUser) {
-      ctx.throw(409, '用户已存在');
-    } // 409 冲突
+      ctx.throw(409, '用户已存在'); // 409 冲突
+    }
     const user = await new User(ctx.request.body).save();
     ctx.body = user; // 这里的 user 还带有 password
   }
